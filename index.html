@@ -1,282 +1,346 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Normal Stickman TCG</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        nav ul { list-style-type: none; padding: 0; }
-        nav li { display: inline-block; margin: 0 1em; }
-        a { text-decoration: none; color: #000; cursor: pointer; }
-        section { display: none; margin-top: 1em; }
-        #cards-container button { width: 60px; height: 60px; margin: 5px; }
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      nav li {
+        display: inline-block;
+        margin: 0 1em;
+      }
+      a {
+        text-decoration: none;
+        color: #000;
+        cursor: pointer;
+      }
+      section {
+        display: none;
+        margin-top: 1em;
+      }
+      #cards-container button {
+        width: 60px;
+        height: 60px;
+        margin: 5px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Normal Stickman TCG</h1>
     <p>Stickoins: <span class="balance"></span></p>
     <nav>
-        <ul>
-            <li><a id="home-link">Home</a></li>
-            <li><a id="deck-link">Deck Builder</a></li>
-            <li><a id="packs-link">Packs</a></li>
-            <li><a id="games-link">Games</a></li>
-            <li><a id="play-link">Play</a></li>
-            <li><a id="cards-link">Cards</a></li>
-            <li><a id="about-link">About</a></li>
-        </ul>
+      <ul>
+        <li><a id="home-link">Home</a></li>
+        <li><a id="deck-link">Deck Builder</a></li>
+        <li><a id="packs-link">Packs</a></li>
+        <li><a id="games-link">Games</a></li>
+        <li><a id="play-link">Play</a></li>
+        <li><a id="cards-link">Cards</a></li>
+        <li><a id="about-link">About</a></li>
+      </ul>
     </nav>
 
     <section id="home-section">
-        <p>Welcome to Normal Stickman TCG!</p>
+      <p>Welcome to Normal Stickman TCG!</p>
     </section>
 
     <section id="deck-section">
-        <h2>Deck Builder</h2>
-        <div id="deck-content"></div>
+      <h2>Deck Builder</h2>
+      <div id="deck-content"></div>
     </section>
 
     <section id="packs-section">
-        <h2>Packs</h2>
-        <button id="open-pack-btn">Open Pack (30 Stickoins)</button>
-        <div id="pack-results"></div>
+      <h2>Packs</h2>
+      <button id="open-pack-btn">Open Pack (30 Stickoins)</button>
+      <div id="pack-results"></div>
     </section>
 
     <section id="games-section">
-        <h2>Games</h2>
-        <button id="start-game-btn">Play Memory Match (15 Stickoins)</button>
-        <div id="game-area" style="display:none;">
-            <div id="timer"></div>
-            <div id="cards-container"></div>
-            <div id="game-msg"></div>
-            <button id="restart-game-btn" style="display:none;">Play Again</button>
-        </div>
+      <h2>Games</h2>
+      <button id="start-game-btn">Play Memory Match (15 Stickoins)</button>
+      <div id="game-area" style="display: none">
+        <div id="timer"></div>
+        <div id="cards-container"></div>
+        <div id="game-msg"></div>
+        <button id="restart-game-btn" style="display: none">Play Again</button>
+      </div>
     </section>
 
     <section id="play-section">
-        <p>Coming soon...</p>
+      <p>Coming soon...</p>
     </section>
 
     <section id="cards-section">
-        <h2>Your Cards</h2>
-        <ul id="cards-list"></ul>
+      <h2>Your Cards</h2>
+      <ul id="cards-list"></ul>
     </section>
 
     <section id="about-section">
-        <h2>About</h2>
-        <p><strong>Normal Stickman TCG</strong> is a simple browser-based trading card game featuring stick figure characters. Build decks and explore basic gameplay using nothing more than HTML and JavaScript.</p>
-        <p>This project began as a small hobby to practice web development. Your deck data is stored locally in your browser, and more cards and features are planned for the future.</p>
+      <h2>About</h2>
+      <p>
+        <strong>Normal Stickman TCG</strong> is a simple browser-based trading
+        card game featuring stick figure characters. Build decks and explore
+        basic gameplay using nothing more than HTML and JavaScript.
+      </p>
+      <p>
+        This project began as a small hobby to practice web development. Your
+        deck data is stored locally in your browser, and more cards and features
+        are planned for the future.
+      </p>
     </section>
 
     <script>
-        const links = {
-            'home-link': 'home-section',
-            'deck-link': 'deck-section',
-            'packs-link': 'packs-section',
-            'games-link': 'games-section',
-            'play-link': 'play-section',
-            'cards-link': 'cards-section',
-            'about-link': 'about-section'
-        };
+      const links = {
+        "home-link": "home-section",
+        "deck-link": "deck-section",
+        "packs-link": "packs-section",
+        "games-link": "games-section",
+        "play-link": "play-section",
+        "cards-link": "cards-section",
+        "about-link": "about-section",
+      };
 
-        const sections = Object.values(links).map(id => document.getElementById(id));
+      const sections = Object.values(links).map((id) =>
+        document.getElementById(id),
+      );
 
-        Object.keys(links).forEach(linkId => {
-            document.getElementById(linkId).addEventListener('click', function(e) {
-                e.preventDefault();
-                showSection(links[linkId]);
-            });
+      Object.keys(links).forEach((linkId) => {
+        document.getElementById(linkId).addEventListener("click", function (e) {
+          e.preventDefault();
+          showSection(links[linkId]);
         });
+      });
 
-        let stickoins = 0;
-        let deck = [];
-        let cards = [];
+      let stickoins = 0;
+      let deck = [];
+      let cards = [];
 
-        function loadData() {
-            stickoins = parseInt(localStorage.getItem('stickoins') || '300');
-            if(!localStorage.getItem('stickoins')) localStorage.setItem('stickoins', stickoins);
-            deck = JSON.parse(localStorage.getItem('deck') || '[]');
-            cards = JSON.parse(localStorage.getItem('cards') || '[]');
-        }
+      function loadData() {
+        stickoins = parseInt(localStorage.getItem("stickoins") || "300");
+        if (!localStorage.getItem("stickoins"))
+          localStorage.setItem("stickoins", stickoins);
+        deck = JSON.parse(localStorage.getItem("deck") || "[]");
+        cards = JSON.parse(localStorage.getItem("cards") || "[]");
+      }
 
-        function saveData() {
-            localStorage.setItem('stickoins', stickoins);
-            localStorage.setItem('deck', JSON.stringify(deck));
-            localStorage.setItem('cards', JSON.stringify(cards));
-        }
+      function saveData() {
+        localStorage.setItem("stickoins", stickoins);
+        localStorage.setItem("deck", JSON.stringify(deck));
+        localStorage.setItem("cards", JSON.stringify(cards));
+      }
 
-        function updateBalance() {
-            document.querySelectorAll('.balance').forEach(el => el.textContent = stickoins);
-        }
+      function updateBalance() {
+        document
+          .querySelectorAll(".balance")
+          .forEach((el) => (el.textContent = stickoins));
+      }
 
-        function showSection(id) {
-            sections.forEach(sec => sec.style.display = 'none');
-            const section = document.getElementById(id);
-            if(section) section.style.display = 'block';
-            if(id === 'deck-section') checkDeck();
-            if(id === 'cards-section') renderCards();
-            updateBalance();
-        }
-
-        function checkDeck() {
-            const deckContent = document.getElementById('deck-content');
-            if(deck.length === 0) {
-                if(confirm('Would you like the Stickman Basics deck?')) {
-                    deck = ['Stickman 1', 'Stickman 2', 'Stickman 3'];
-                    saveData();
-                    deckContent.textContent = 'Stickman Basics deck added!';
-                } else {
-                    deckContent.textContent = 'You have no cards.';
-                }
-            } else {
-                deckContent.innerHTML = '<p>Your Deck:</p><ul>' + deck.map(card => `<li>${card}</li>`).join('') + '</ul>';
-            }
-        }
-
-        function cardValue(rarity) {
-            if(rarity === 'legendary') return 300;
-            if(rarity === 'epic') return 150;
-            if(rarity === 'rare') return 40;
-            return 15;
-        }
-
-        function renderCards() {
-            const list = document.getElementById('cards-list');
-            list.innerHTML = '';
-            if(cards.length === 0) {
-                list.innerHTML = '<li>No cards.</li>';
-                return;
-            }
-            cards.forEach((card, index) => {
-                const li = document.createElement('li');
-                li.textContent = `${card.name} (${card.rarity}) `;
-                const addBtn = document.createElement('button');
-                addBtn.textContent = 'Add to Deck';
-                addBtn.addEventListener('click', () => {
-                    deck.push(card.name);
-                    cards.splice(index,1);
-                    saveData();
-                    renderCards();
-                });
-                const sellBtn = document.createElement('button');
-                sellBtn.textContent = 'Sell';
-                sellBtn.addEventListener('click', () => {
-                    stickoins += cardValue(card.rarity);
-                    cards.splice(index,1);
-                    saveData();
-                    renderCards();
-                    updateBalance();
-                });
-                li.appendChild(addBtn);
-                li.appendChild(sellBtn);
-                list.appendChild(li);
-            });
-        }
-
-        document.getElementById('open-pack-btn').addEventListener('click', openPack);
-
-        function openPack() {
-            if(stickoins < 30) { alert('Not enough Stickoins'); return; }
-            stickoins -= 30;
-            const results = [];
-            for(let i=0;i<5;i++) {
-                let rarity = 'common';
-                if(i >= 3) {
-                    const roll = Math.random();
-                    if(roll < 0.01) rarity = 'legendary';
-                    else if(roll < 0.06) rarity = 'epic';
-                    else if(roll < 0.16) rarity = 'rare';
-                }
-                const card = {name: `${rarity.charAt(0).toUpperCase()+rarity.slice(1)} Stickman`, rarity};
-                cards.push(card);
-                results.push(card);
-            }
-            saveData();
-            updateBalance();
-            renderCards();
-            showPackResults(results);
-        }
-
-        function showPackResults(cardsPulled) {
-            const pr = document.getElementById('pack-results');
-            pr.innerHTML = '<p>You pulled:</p><ul>' + cardsPulled.map(c => `<li>${c.name} (${c.rarity})</li>`).join('') + '</ul>';
-        }
-
-        const startBtn = document.getElementById('start-game-btn');
-        const gameArea = document.getElementById('game-area');
-        const timerEl = document.getElementById('timer');
-        const cardsContainer = document.getElementById('cards-container');
-        const gameMsg = document.getElementById('game-msg');
-        const restartBtn = document.getElementById('restart-game-btn');
-        let timer;
-        let timeLeft;
-        let flipped = [];
-
-        startBtn.addEventListener('click', startGame);
-
-        function startGame() {
-            if(stickoins < 15) { alert('Not enough Stickoins'); return; }
-            stickoins -= 15;
-            updateBalance();
-            gameArea.style.display = 'block';
-            startBtn.style.display = 'none';
-            restartBtn.style.display = 'none';
-            gameMsg.textContent = '';
-            cardsContainer.innerHTML = '';
-            flipped = [];
-            const vals = [1,1,2,2].sort(() => Math.random() - 0.5);
-            vals.forEach(v => {
-                const btn = document.createElement('button');
-                btn.textContent = '?';
-                btn.dataset.val = v;
-                btn.addEventListener('click', () => flipCard(btn));
-                cardsContainer.appendChild(btn);
-            });
-            timeLeft = 10;
-            timerEl.textContent = 'Time: ' + timeLeft;
-            timer = setInterval(() => {
-                timeLeft--;
-                timerEl.textContent = 'Time: ' + timeLeft;
-                if(timeLeft <= 0) endGame(false);
-            }, 1000);
-        }
-
-        function flipCard(card) {
-            if(flipped.length === 2 || card.classList.contains('matched') || card.classList.contains('flipped')) return;
-            card.classList.add('flipped');
-            card.textContent = card.dataset.val;
-            flipped.push(card);
-            if(flipped.length === 2) {
-                if(flipped[0].dataset.val === flipped[1].dataset.val) {
-                    flipped.forEach(c => { c.classList.add('matched'); });
-                    flipped = [];
-                    if(document.querySelectorAll('#cards-container .matched').length === 4) endGame(true);
-                } else {
-                    setTimeout(() => {
-                        flipped.forEach(c => { c.classList.remove('flipped'); c.textContent='?'; });
-                        flipped = [];
-                    }, 500);
-                }
-            }
-        }
-
-        function endGame(win) {
-            clearInterval(timer);
-            startBtn.style.display = 'block';
-            restartBtn.style.display = 'block';
-            restartBtn.onclick = startGame;
-            if(win) {
-                gameMsg.textContent = 'You win! +30 Stickoins';
-                stickoins += 30;
-            } else {
-                gameMsg.textContent = 'You lose!';
-            }
-            updateBalance();
-        }
-
-        loadData();
+      function showSection(id) {
+        sections.forEach((sec) => (sec.style.display = "none"));
+        const section = document.getElementById(id);
+        if (section) section.style.display = "block";
+        if (id === "deck-section") checkDeck();
+        if (id === "cards-section") renderCards();
         updateBalance();
-        showSection('home-section');
+      }
+
+      function checkDeck() {
+        const deckContent = document.getElementById("deck-content");
+        if (deck.length === 0) {
+          if (confirm("Would you like the Stickman Basics deck?")) {
+            deck = ["Stickman 1", "Stickman 2", "Stickman 3"];
+            saveData();
+            deckContent.textContent = "Stickman Basics deck added!";
+          } else {
+            deckContent.textContent = "You have no cards.";
+          }
+        } else {
+          deckContent.innerHTML =
+            "<p>Your Deck:</p><ul>" +
+            deck.map((card) => `<li>${card}</li>`).join("") +
+            "</ul>";
+        }
+      }
+
+      function cardValue(rarity) {
+        if (rarity === "legendary") return 300;
+        if (rarity === "epic") return 150;
+        if (rarity === "rare") return 40;
+        return 15;
+      }
+
+      function renderCards() {
+        const list = document.getElementById("cards-list");
+        list.innerHTML = "";
+        if (cards.length === 0) {
+          list.innerHTML = "<li>No cards.</li>";
+          return;
+        }
+        cards.forEach((card, index) => {
+          const li = document.createElement("li");
+          li.textContent = `${card.name} (${card.rarity}) `;
+          const addBtn = document.createElement("button");
+          addBtn.textContent = "Add to Deck";
+          addBtn.addEventListener("click", () => {
+            deck.push(card.name);
+            cards.splice(index, 1);
+            saveData();
+            renderCards();
+          });
+          const sellBtn = document.createElement("button");
+          sellBtn.textContent = "Sell";
+          sellBtn.addEventListener("click", () => {
+            stickoins += cardValue(card.rarity);
+            cards.splice(index, 1);
+            saveData();
+            renderCards();
+            updateBalance();
+          });
+          li.appendChild(addBtn);
+          li.appendChild(sellBtn);
+          list.appendChild(li);
+        });
+      }
+
+      document
+        .getElementById("open-pack-btn")
+        .addEventListener("click", openPack);
+
+      function openPack() {
+        if (stickoins < 30) {
+          alert("Not enough Stickoins");
+          return;
+        }
+        stickoins -= 30;
+        const results = [];
+        for (let i = 0; i < 5; i++) {
+          let rarity = "common";
+          if (i >= 3) {
+            const roll = Math.random();
+            if (roll < 0.01) rarity = "legendary";
+            else if (roll < 0.06) rarity = "epic";
+            else if (roll < 0.16) rarity = "rare";
+          }
+          const card = {
+            name: `${rarity.charAt(0).toUpperCase() + rarity.slice(1)} Stickman`,
+            rarity,
+          };
+          cards.push(card);
+          results.push(card);
+        }
+        saveData();
+        updateBalance();
+        renderCards();
+        showPackResults(results);
+      }
+
+      function showPackResults(cardsPulled) {
+        const pr = document.getElementById("pack-results");
+        pr.innerHTML =
+          "<p>You pulled:</p><ul>" +
+          cardsPulled.map((c) => `<li>${c.name} (${c.rarity})</li>`).join("") +
+          "</ul>";
+      }
+
+      const startBtn = document.getElementById("start-game-btn");
+      const gameArea = document.getElementById("game-area");
+      const timerEl = document.getElementById("timer");
+      const cardsContainer = document.getElementById("cards-container");
+      const gameMsg = document.getElementById("game-msg");
+      const restartBtn = document.getElementById("restart-game-btn");
+      let timer;
+      let timeLeft;
+      let flipped = [];
+
+      startBtn.addEventListener("click", startGame);
+
+      function startGame() {
+        if (stickoins < 15) {
+          alert("Not enough Stickoins");
+          return;
+        }
+        stickoins -= 15;
+        updateBalance();
+        gameArea.style.display = "block";
+        startBtn.style.display = "none";
+        restartBtn.style.display = "none";
+        gameMsg.textContent = "";
+        cardsContainer.innerHTML = "";
+        flipped = [];
+        const vals = [1, 1, 2, 2].sort(() => Math.random() - 0.5);
+        vals.forEach((v) => {
+          const btn = document.createElement("button");
+          btn.textContent = "?";
+          btn.dataset.val = v;
+          btn.addEventListener("click", () => flipCard(btn));
+          cardsContainer.appendChild(btn);
+        });
+        timeLeft = 10;
+        timerEl.textContent = "Time: " + timeLeft;
+        timer = setInterval(() => {
+          timeLeft--;
+          timerEl.textContent = "Time: " + timeLeft;
+          if (timeLeft <= 0) endGame(false);
+        }, 1000);
+      }
+
+      function flipCard(card) {
+        if (
+          flipped.length === 2 ||
+          card.classList.contains("matched") ||
+          card.classList.contains("flipped")
+        )
+          return;
+        card.classList.add("flipped");
+        card.textContent = card.dataset.val;
+        flipped.push(card);
+        if (flipped.length === 2) {
+          if (flipped[0].dataset.val === flipped[1].dataset.val) {
+            flipped.forEach((c) => {
+              c.classList.add("matched");
+            });
+            flipped = [];
+            if (
+              document.querySelectorAll("#cards-container .matched").length ===
+              4
+            )
+              endGame(true);
+          } else {
+            setTimeout(() => {
+              flipped.forEach((c) => {
+                c.classList.remove("flipped");
+                c.textContent = "?";
+              });
+              flipped = [];
+            }, 500);
+          }
+        }
+      }
+
+      function endGame(win) {
+        clearInterval(timer);
+        startBtn.style.display = "block";
+        restartBtn.style.display = "block";
+        restartBtn.onclick = startGame;
+        if (win) {
+          gameMsg.textContent = "You win! +30 Stickoins";
+          stickoins += 30;
+        } else {
+          gameMsg.textContent = "You lose!";
+        }
+        updateBalance();
+      }
+
+      loadData();
+      updateBalance();
+      showSection("home-section");
     </script>
-</body>
+  </body>
 </html>
