@@ -1,98 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Normal Stickman TCG</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        nav ul { list-style-type: none; padding: 0; }
-        nav li { display: inline-block; margin: 0 1em; }
-        a { text-decoration: none; color: #000; cursor: pointer; }
-        section { display: none; margin-top: 1em; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebDev Engine</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .tabs { display: flex; background:#333; }
+    .tab { padding: 10px 20px; color: white; cursor:pointer; }
+    .tab.active { background:#555; }
+    .panel { display:none; padding:20px; }
+    .panel.active { display:block; }
+    #spriteCanvas { border:1px solid #000; cursor:crosshair; }
+    #exportBtn { position:fixed; bottom:10px; right:10px; padding:10px 15px; }
+  </style>
 </head>
 <body>
-    <h1>Normal Stickman TCG</h1>
-    <nav>
-        <ul>
-            <li><a id="home-link">Home</a></li>
-            <li><a id="deck-link">Deck Builder</a></li>
-            <li><a id="play-link">Play</a></li>
-            <li><a id="cards-link">Cards</a></li>
-            <li><a id="about-link">About</a></li>
-        </ul>
-    </nav>
+  <div class="tabs">
+    <div class="tab active" data-panel="manual">Manual</div>
+    <div class="tab" data-panel="sprites">Sprites</div>
+    <div class="tab" data-panel="writing">Writing</div>
+  </div>
+  <div id="manual" class="panel active">
+    <h2>Manual</h2>
+    <p>This is the manual for the WebDev engine. Use the Sprites tab to draw sprites on a 128×128 canvas. Use the Writing tab to implement code referencing those sprites. The Export button will download your code as a JavaScript file.</p>
+  </div>
+  <div id="sprites" class="panel">
+    <h2>Sprites</h2>
+    <canvas id="spriteCanvas" width="128" height="128"></canvas>
+    <div>
+      <button id="clearCanvas">Clear</button>
+    </div>
+  </div>
+  <div id="writing" class="panel">
+    <h2>Writing</h2>
+    <textarea id="codeArea" rows="10" cols="50" placeholder="Write your code here..."></textarea>
+  </div>
+  <button id="exportBtn">Export JS</button>
+<script>
+const tabs=document.querySelectorAll('.tab');
+const panels=document.querySelectorAll('.panel');
 
-    <section id="home-section">
-        <p>Welcome to Normal Stickman TCG!</p>
-    </section>
+tabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    tabs.forEach(t=>t.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
 
-    <section id="deck-section">
-        <h2>Deck Builder</h2>
-        <div id="deck-content"></div>
-    </section>
+// Sprite drawing
+const canvas=document.getElementById('spriteCanvas');
+const ctx=canvas.getContext('2d');
+ctx.fillStyle='#000';
+let drawing=false;
+canvas.addEventListener('mousedown',e=>{drawing=true; draw(e);});
+canvas.addEventListener('mousemove',e=>{ if(drawing) draw(e);});
+canvas.addEventListener('mouseup',()=>drawing=false);
+canvas.addEventListener('mouseleave',()=>drawing=false);
+function draw(e){
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const y=e.clientY-rect.top;
+  ctx.fillRect(x,y,1,1);
+}
 
-    <section id="play-section">
-        <p>Coming soon...</p>
-    </section>
+document.getElementById('clearCanvas').addEventListener('click',()=>{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+});
 
-    <section id="cards-section">
-        <p>Card list placeholder.</p>
-    </section>
-
-    <section id="about-section">
-        <h2>About</h2>
-        <p><strong>Normal Stickman TCG</strong> is a simple browser-based trading card game featuring stick figure characters. Build decks and explore basic gameplay using nothing more than HTML and JavaScript.</p>
-        <p>This project began as a small hobby to practice web development. Your deck data is stored locally in your browser, and more cards and features are planned for the future.</p>
-    </section>
-
-    <script>
-        const links = {
-            'home-link': 'home-section',
-            'deck-link': 'deck-section',
-            'play-link': 'play-section',
-            'cards-link': 'cards-section',
-            'about-link': 'about-section'
-        };
-
-        const sections = Object.values(links).map(id => document.getElementById(id));
-
-        Object.keys(links).forEach(linkId => {
-            document.getElementById(linkId).addEventListener('click', function(e) {
-                e.preventDefault();
-                showSection(links[linkId]);
-            });
-        });
-
-        function showSection(id) {
-            sections.forEach(sec => sec.style.display = 'none');
-            const section = document.getElementById(id);
-            if(section) section.style.display = 'block';
-            if(id === 'deck-section') checkDeck();
-        }
-
-        function checkDeck() {
-            const deckContent = document.getElementById('deck-content');
-            let deck = [];
-            try {
-                deck = JSON.parse(localStorage.getItem('deck') || '[]');
-            } catch(e) {}
-
-            if(deck.length === 0) {
-                if(confirm('Would you like the Stickman Basics deck?')) {
-                    deck = ['Stickman 1', 'Stickman 2', 'Stickman 3'];
-                    localStorage.setItem('deck', JSON.stringify(deck));
-                    deckContent.textContent = 'Stickman Basics deck added!';
-                } else {
-                    deckContent.textContent = 'You have no cards.';
-                }
-            } else {
-                deckContent.innerHTML = '<p>Your Deck:</p><ul>' + deck.map(card => `<li>${card}</li>`).join('') + '</ul>';
-            }
-        }
-
-        // show home on initial load
-        showSection('home-section');
-    </script>
+// Export code
+const exportBtn=document.getElementById('exportBtn');
+exportBtn.addEventListener('click',()=>{
+  const code=document.getElementById('codeArea').value;
+  const blob=new Blob([code],{type:'text/javascript'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download='webdev.js';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+</script>
 </body>
 </html>
